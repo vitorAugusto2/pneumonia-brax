@@ -5,6 +5,7 @@
 | Dataset   | Pacientes com pneumonia      | 380        |
 | Dataset   | Outras doenças / Sem achados | 18.062     |
 
+**Divisão estratificada**
 | Conjunto | Target=0 | Target=1 | 
 | -------- | -------- | -------- |
 | Train    | 373      | 266      |
@@ -27,5 +28,3 @@
 | ResNet50 | XGB           | Test  | 0.690    | 0.656     | 0.500  | 0.567    | 0.757 | 02:02       |
 | ResNet50 | SVM           | Val   | 0.626    | 0.476     | 0.506  | 0.491    | 0.657 | 00:52       |
 | ResNet50 | SVM           | Test  | 0.665    | 0.583     | 0.613  | 0.598    | 0.721 | 00:52       |
-
-<img width="162" height="1745" alt="image" src="https://github.com/user-attachments/assets/eaba2800-be8b-4135-8bfa-8db21162925c" />
