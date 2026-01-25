@@ -2,7 +2,7 @@
 ### **Distribuição de pacientes**
 ---
 
-| Categoria | Descrição                    | Quantidade |
+| Conjunto  | Descrição                    | Quantidade |
 | --------- | ---------------------------- | ---------- |
 | Dataset   | Pacientes com pneumonia      | 380        |
 | Dataset   | Outras doenças / Sem achados | 18.062     |
