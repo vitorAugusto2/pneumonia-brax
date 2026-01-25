@@ -1,5 +1,7 @@
 
 ### **Distribuição de pacientes**
+---
+
 | Categoria | Descrição                    | Quantidade |
 | --------- | ---------------------------- | ---------- |
 | Dataset   | Pacientes com pneumonia      | 380        |
@@ -13,6 +15,7 @@
 | Test     | 45       | 38       |
 
 ### **Resultados preliminares**
+---
 
 | CNN | Classificador | Conjunto | Accuracy | Precision | Recall | F1-score | AUC   | Tempo Total |
 | -------- | ------------- | ----- | -------- | --------- | ------ | -------- | ----- | ----------- |
