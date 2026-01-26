@@ -1,15 +1,14 @@
 import os
 import time
 
-from sklearn.model_selection import GridSearchCV
-
 from src.split_set import csv_to_bin, split_set
-from src.cnn_backbone import get_backbone
 from src.data_loaders import get_loaders
-from src.features import get_device, extract_features
+from src.cnn_backbone import get_backbone
+from src.feature_extractor import get_device, get_extract_features
 from src.classifiers import get_classifiers
 from src.evaluate import get_evaluate
-#from src.plot import plot_confusion_matrix, plot_precision_recall, plot_roc_curve
+from utils.transforms import get_transforms
+#from utils.plot import plot_confusion_matrix, plot_precision_recall, plot_roc_curve
 from utils.format_time import get_format_time
 
 
@@ -34,25 +33,29 @@ def main():
     split_set(path_binary_csv)
 
     for cnn in cnns:
-        # Preprocess + Model + cnn
+        # CNN
         model, preprocess, feat_img = get_backbone(cnn)
 
-        # Data Loaders
+        # Transforms
+        train_transform, eval_transform = get_transforms(preprocess)
+
+        # Create Data Loaders
         loaders = get_loaders(
             base_dir = base_dir,
             train_csv = "./data/train.csv",
             val_csv = "./data/val.csv",
             test_csv = "./data/test.csv",
-            transform = preprocess,
+            train_transform=train_transform,
+            eval_transform=eval_transform,
             batch_size = 32,
-            num_workers = 2,
+            num_workers = 2
         )
 
         # Extract features
         t0_feat = time.time()
-        X_train, y_train = extract_features(loaders["train"], model, device=device)
-        X_val, y_val = extract_features(loaders["val"], model, device=device)
-        X_test, y_test = extract_features(loaders["test"], model, device=device)
+        X_train, y_train = get_extract_features(loaders["train"], model, device=device)
+        X_val, y_val = get_extract_features(loaders["val"], model, device=device)
+        X_test, y_test = get_extract_features(loaders["test"], model, device=device)
         feature_time = time.time() - t0_feat
 
         for clf in classifiers:
@@ -101,8 +104,6 @@ def main():
 
             total_time = feature_time + train_time
 
-            # Plots: Confusion Matrix, Precision Recall and Curve ROC
-
             # Prints: performance metrics (VAL and TEST) + Time RUN
             print(f"\nEVALUATION METRICS")
             print(f"VAL")
@@ -125,6 +126,9 @@ def main():
             print(f"Feature extraction = {get_format_time(feature_time)}")
             print(f"Training           = {get_format_time(train_time)}")
             print(f"Total              = {get_format_time(total_time)}")
+
+            # Plots: Confusion Matrix, Precision, Recall and Curve ROC
+
 
 if __name__ == "__main__":
     main()

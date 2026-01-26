@@ -17,22 +17,28 @@ class CsvImgData(Dataset):
         row = self.df.iloc[idx]
         rel_path = row["path_png"]
         img_path = os.path.join(self.base_dir, rel_path)
+
         img = Image.open(img_path).convert("RGB")
-        if self.transform:
+
+        if self.transform is not None:
             img = self.transform(img)
 
         y = int(row["target"])
+
         return img, y
 
-def get_loaders(base_dir: str, train_csv: str, val_csv: str, test_csv: str, transform, batch_size: int, num_workers: int):
-    train_df = CsvImgData(train_csv, base_dir=base_dir, transform=transform)
-    val_df   = CsvImgData(val_csv, base_dir=base_dir, transform=transform)
-    test_df  = CsvImgData(test_csv, base_dir=base_dir, transform=transform)
+
+def get_loaders(base_dir: str, train_csv: str, val_csv: str, test_csv: str, train_transform, eval_transform,
+                batch_size: int,num_workers: int):
+
+    train_ds = CsvImgData(train_csv, base_dir=base_dir, transform=train_transform)
+    val_ds   = CsvImgData(val_csv,   base_dir=base_dir, transform=eval_transform)
+    test_ds  = CsvImgData(test_csv,  base_dir=base_dir, transform=eval_transform)
 
     loaders = {
-        "train": DataLoader(train_df, batch_size=batch_size, shuffle=True, num_workers=num_workers),
-        "val": DataLoader(val_df, batch_size=batch_size, shuffle=False, num_workers=num_workers),
-        "test": DataLoader(test_df, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+        "train": DataLoader(train_ds, batch_size=batch_size, shuffle=True,  num_workers=num_workers),
+        "val":   DataLoader(val_ds,   batch_size=batch_size, shuffle=False, num_workers=num_workers),
+        "test":  DataLoader(test_ds,  batch_size=batch_size, shuffle=False, num_workers=num_workers),
     }
 
     return loaders
