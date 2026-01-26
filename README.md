@@ -1,33 +1,34 @@
 
-### **Distribuição de pacientes**
----
+# Modelo híbrido baseado em CNN e classificadores para detecção de pneumonia em imagens de raio-x
+## Resultados preliminares
+**Distribuição de pacientes**
 
-| Conjunto  | Descrição                    | Quantidade |
-| --------- | ---------------------------- | ---------- |
-| Dataset   | Pacientes com pneumonia      | 380        |
-| Dataset   | Outras doenças / Sem achados | 18.062     |
+| Descrição      | Quantidade |
+| -------------- | ---------- |
+| Pneumonia      | 380        |
+| Normal         | 18.062     |
 
-**Divisão estratificada**
+**Divisão**
 | Conjunto | Target=0 | Target=1 | 
 | -------- | -------- | -------- |
-| Train    | 373      | 266      |
-| Val      | 104      | 76       |
-| Test     | 45       | 38       |
+| Train    | 323      | 266      |
+| Val      | 93       | 76       |
+| Test     | 43       | 38       |
 
-### **Resultados preliminares**
----
+### **Resultados**
 
-| CNN | Classificador | Conjunto | Accuracy | Precision | Recall | F1-score | AUC   | Tempo Total |
-| -------- | ------------- | ----- | -------- | --------- | ------ | -------- | ----- | ----------- |
-| VGG16    | RF            | Val   | 0.669    | 0.600     | 0.212  | 0.313    | 0.658 | 00:45       |
-| VGG16    | RF            | Test  | 0.655    | 0.667     | 0.300  | 0.414    | 0.763 | 00:45       |
-| VGG16    | XGB           | Val   | 0.655    | 0.521     | 0.404  | 0.455    | 0.642 | 02:05       |
-| VGG16    | XGB           | Test  | 0.695    | 0.652     | 0.537  | 0.589    | 0.757 | 02:05       |
-| VGG16    | SVM           | Val   | 0.685    | 0.562     | 0.526  | 0.543    | 0.658 | 01:04       |
-| VGG16    | SVM           | Test  | 0.670    | 0.593     | 0.600  | 0.596    | 0.741 | 01:04       |
-| ResNet50 | RF            | Val   | 0.689    | 0.656     | 0.269  | 0.382    | 0.704 | 00:47       |
-| ResNet50 | RF            | Test  | 0.695    | 0.750     | 0.375  | 0.500    | 0.742 | 00:47       |
-| ResNet50 | XGB           | Val   | 0.678    | 0.568     | 0.404  | 0.472    | 0.722 | 02:02       |
-| ResNet50 | XGB           | Test  | 0.690    | 0.656     | 0.500  | 0.567    | 0.757 | 02:02       |
-| ResNet50 | SVM           | Val   | 0.626    | 0.476     | 0.506  | 0.491    | 0.657 | 00:52       |
-| ResNet50 | SVM           | Test  | 0.665    | 0.583     | 0.613  | 0.598    | 0.721 | 00:52       |
+| CNN      | Classificador | Conjunto | Acurácia  | Precisão  | Revocação | F1-score  | AUC       | Tempo Execução |
+| -------- | ------------- | -------- | --------- | --------- | --------- | --------- | --------- | -------------- |
+| VGG16    | RF            | VAL      | 0.691     | 0.710     | 0.455     | 0.555     | 0.733     | 00:43          |
+| VGG16    | RF            | TEST     | 0.627     | 0.667     | 0.500     | 0.571     | 0.721     | 00:43          |
+| VGG16    | XGB           | VAL      | 0.672     | 0.634     | 0.532     | 0.578     | 0.730     | 01:49          |
+| VGG16    | XGB           | TEST     | 0.615     | 0.625     | 0.562     | 0.592     | 0.675     | 01:49          |
+| VGG16    | SVM           | VAL      | 0.626     | 0.550     | 0.635     | 0.589     | 0.670     | 00:55          |
+| VGG16    | SVM           | TEST     | 0.615     | 0.594     | 0.713     | 0.648     | 0.669     | 00:55          |
+| ResNet50 | RF            | VAL      | 0.694     | 0.681     | 0.519     | 0.589     | 0.738     | 00:42          |
+| ResNet50 | RF            | TEST     | 0.696     | 0.731     | 0.613     | 0.667     | 0.739     | 00:42          |
+| ResNet50 | XGB           | VAL      | 0.696     | 0.639     | 0.647     | 0.643     | 0.762     | 01:41          |
+| ResNet50 | XGB           | TEST     | 0.689     | 0.674     | **0.725** | 0.699     | 0.747     | 01:41          |
+| ResNet50 | SVM           | VAL      | 0.659     | 0.600     | 0.577     | 0.588     | 0.704     | 00:45          |
+| ResNet50 | SVM           | TEST     | 0.683     | 0.671     | 0.713     | 0.691     | 0.725     | 00:45          |
+
