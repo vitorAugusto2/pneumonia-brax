@@ -3,12 +3,19 @@ from sklearn.model_selection import train_test_split
 
 
 def csv_to_bin(path_master_csv: str):
-    # Data Processing
+    """
+    Data Processing:
+        * With pneumonia: "Pneumonia" = 1
+        * Normal: "No Findings" = 1
+    """
+
     df = pd.read_csv(path_master_csv)
 
-    df = df[df["Pneumonia"] != -1]
+    df = df[(df["Pneumonia"] == 1) | (df["No Finding"] == 1)]
 
-    df["target"] = (df["Pneumonia"] == 1).astype("int64")
+    df["target"] = 0
+    df.loc[df["Pneumonia"] == 1, "target"] = 1
+
     df = df.rename(columns={
         "PngPath": "path_png",
         "PatientID": "patient_id"
@@ -30,22 +37,22 @@ def split_set(path_binary_csv: str):
     )
 
     # Split patients
-    patients_pnm = patient_df[patient_df["target"] == 1]      # with pneumonia = 1
-    patients_not_pnm = patient_df[patient_df["target"] == 0]  # without pneumonia = 0
+    patients_pnm = patient_df[patient_df["target"] == 1]
+    patients_normal = patient_df[patient_df["target"] == 0]
 
     # Undersampling
     ratio = 1 # switch for 1 (1:1), 2 (1:2) or 3 (1:3) ...
 
     qt_pnm = len(patients_pnm)
-    qt_not_pnm = min(len(patients_not_pnm), ratio * qt_pnm)
+    qt_normal = min(len(patients_normal), ratio * qt_pnm)
 
-    patients_not_pnm_sampled = patients_not_pnm.sample(
-        n = qt_not_pnm,
+    patients_normal_sampled = patients_normal.sample(
+        n = qt_normal,
         random_state = 42
     )
 
     patient_df_balanced = pd.concat(
-        [patients_pnm, patients_not_pnm_sampled],
+        [patients_pnm, patients_normal_sampled],
         ignore_index = True
     )
 
@@ -65,13 +72,13 @@ def split_set(path_binary_csv: str):
     )
 
     # Recover images
-    train_ids = set(train_patients["patient_id"])
-    val_ids = set(val_patients["patient_id"])
-    test_ids = set(test_patients["patient_id"])
+    train_img = set(train_patients["patient_id"])
+    val_img = set(val_patients["patient_id"])
+    test_img = set(test_patients["patient_id"])
 
-    train_df = df[df["patient_id"].isin(train_ids)]
-    val_df = df[df["patient_id"].isin(val_ids)]
-    test_df = df[df["patient_id"].isin(test_ids)]
+    train_df = df[df["patient_id"].isin(train_img)]
+    val_df = df[df["patient_id"].isin(val_img)]
+    test_df = df[df["patient_id"].isin(test_img)]
 
     train_df.to_csv("./data/train.csv", index=False)
     val_df.to_csv("./data/val.csv", index=False)
@@ -79,8 +86,8 @@ def split_set(path_binary_csv: str):
 
     # Prints: patients with or without pneumonia in each group
     print(f"DISTRIBUTION OF PATIENTS BY GROUP")
-    print(f"Patients with pneumonia      = {len(patients_pnm)}")
-    print(f"Other diseases + No Findings = {len(patients_not_pnm)}")
+    print(f"Pneumonia = {len(patients_pnm)}")
+    print(f"Normal    = {len(patients_normal)}")
 
     print("\nTRAIN")
     print(train_df.groupby("target")["patient_id"].nunique().to_string())
