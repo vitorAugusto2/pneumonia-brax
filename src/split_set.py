@@ -84,7 +84,7 @@ def split_set(path_binary_csv: str):
     val_df.to_csv("./data/val.csv", index=False)
     test_df.to_csv("./data/test.csv", index=False)
 
-    # Prints: patients with or without pneumonia in each group
+    # Prints: patients with or normal in each group
     print(f"DISTRIBUTION OF PATIENTS BY GROUP")
     print(f"Pneumonia = {len(patients_pnm)}")
     print(f"Normal    = {len(patients_normal)}")
@@ -96,4 +96,5 @@ def split_set(path_binary_csv: str):
     print(val_df.groupby("target")["patient_id"].nunique().to_string())
 
     print("\nTEST")
+
     print(test_df.groupby("target")["patient_id"].nunique().to_string())
