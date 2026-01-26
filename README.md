@@ -6,7 +6,7 @@
 | Descrição      | Quantidade |
 | -------------- | ---------- |
 | Pneumonia      | 380        |
-| Normal         | 18.062     |
+| Normal         | 13.907     |
 
 **Divisão**
 | Conjunto | Target=0 | Target=1 | 
