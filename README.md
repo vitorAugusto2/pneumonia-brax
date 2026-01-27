@@ -1,5 +1,9 @@
 
 # Modelo híbrido baseado em CNN e classificadores para detecção de pneumonia em imagens de raio-x
+## Metodologia
+
+![TCC USP (4)](https://github.com/user-attachments/assets/d35c4845-a555-41f4-b83a-c1473f317178)
+
 ## Resultados preliminares
 **Distribuição de pacientes**
 
