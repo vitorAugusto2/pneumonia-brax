@@ -35,11 +35,10 @@ from utils.plot import (
     plot_roc_curve
 )
 
-# =========================
-# CONFIGURACOES
-# =========================
+# Initial settings
 cnns = ["vgg16", "resnet50"]        # ["vgg16", "resnet50"]
 classifiers = ["rf", "xgb", "svm"]  # ["rf", "xgb", "svm"]
+
 fine_tuning_params = {
     "vgg16": {
         "epochs": 8,
@@ -71,18 +70,14 @@ os.makedirs(cache_cnn, exist_ok=True)
 
 
 def main():
-    # =========================
-    # DATASET BINARY + SPLIT
-    # =========================
+    # Dataset Binary + Split
     path_master_csv = os.path.join(base_dir, "dataset", "master_spreadsheet_update.csv")
     csv_to_bin(path_master_csv)
 
     path_binary_csv = os.path.join(base_dir, "dataset", "dataset_binary.csv")
     split_set(path_binary_csv)
 
-    # =========================
-    # LOOP NAS CNNS
-    # =========================
+    # CNNs
     for cnn in cnns:
         if use_cache and features_exist(cache_cnn, cnn) and not force_reextract:
             print(f"\n=> [CNN] Loading backbone {cnn.upper()}")
@@ -140,9 +135,8 @@ def main():
             print(f"Fine-tunning        = {get_format_time(fine_tunning_time)}")
             print(f"Feature extraction  = {get_format_time(feature_time)}")
 
-        # =========================
-        # LOOP NOS CLASSIFICADORES
-        # =========================
+
+        # Classifiers
         for clf in classifiers:
             print(f"\n=> {cnn.upper()} (+) {clf.upper()}")
 
@@ -182,16 +176,13 @@ def main():
                 print(f"[CV] Using saved params for {cnn.upper()} + {clf.upper()}")
                 print(f"Best params = {best_params}")
 
-            # aplica os melhores parametros no modelo base
-            model.set_params(**best_params)
+            model.set_params(**best_params) # applies the best parameters to the base model
 
-            # treino final
             t0_train = time.time()
-            model.fit(X_train, y_train)
+            model.fit(X_train, y_train) # final training
             train_time = time.time() - t0_train
 
-            # avaliacao
-            val_default = get_evaluate(model, X_val, y_val)
+            val_default = get_evaluate(model, X_val, y_val) # evaluate
 
             best_threshold, best_val_f1 = find_best_threshold(
                 y_true=y_val,
@@ -224,9 +215,8 @@ def main():
             print("\nTIME RUN (MM:SS)")
             print(f"Training = {get_format_time(train_time)}")
 
-            # =========================
-            # PLOTS - VAL
-            # =========================
+
+            # Plots - Val
             plot_confusion_matrix(
                 y_true=y_val,
                 y_pred=val_ans["y_pred"],
@@ -245,9 +235,7 @@ def main():
                 output_plot=f"./plots/precisionrecall_val_{cnn}_{clf}.png"
             )
 
-            # =========================
-            # PLOTS - TEST
-            # =========================
+           # Plots - Test
             plot_confusion_matrix(
                 y_true=y_test,
                 y_pred=test_ans["y_pred"],
