@@ -59,6 +59,7 @@ run_gridsearch = False
 
 device = get_device()
 
+# Dirs
 base_dir = os.path.dirname(os.path.abspath(__file__))
 cache_cnn = os.path.join(base_dir, "utils", "cache_cnn")
 
