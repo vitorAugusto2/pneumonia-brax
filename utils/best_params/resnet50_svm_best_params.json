@@ -1,0 +1,6 @@
+{
+    "clf__class_weight": "balanced",
+    "clf__C": 1,
+    "clf__gamma": "scale",
+    "clf__kernel": "rbf"
+}
