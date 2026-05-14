@@ -47,11 +47,9 @@ class HybridFineTuneModel(nn.Module):
 
 
 def freeze_for_partial_finetune(model: HybridFineTuneModel):
-    # congela tudo
     for param in model.backbone.parameters():
         param.requires_grad = False
 
-    # descongela final
     if model.cnn_name == "resnet50":
         for param in model.backbone.layer4.parameters():
             param.requires_grad = True
@@ -60,7 +58,6 @@ def freeze_for_partial_finetune(model: HybridFineTuneModel):
         for param in model.backbone.features[24:].parameters():
             param.requires_grad = True
 
-    # cabeca treinavel
     for param in model.head.parameters():
         param.requires_grad = True
 
@@ -90,7 +87,6 @@ def train_partial_finetune(model, loaders, device, epochs, lr_backbone, lr_head)
     best_val_loss = float("inf")
 
     for epoch in range(epochs):
-        # treino
         model.train()
         train_loss = 0.0
 
@@ -108,7 +104,6 @@ def train_partial_finetune(model, loaders, device, epochs, lr_backbone, lr_head)
 
         train_loss /= len(loaders["train"].dataset)
 
-        # validação
         model.eval()
         val_loss = 0.0
 
