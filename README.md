@@ -1,4 +1,21 @@
 # Modelo híbrido baseado em CNN e classificadores para detecção de pneumonia em imagens de raio-x
+
+A detecção de pneumonia em imagens de raio X de tórax foi relevante para apoiar o
+diagnóstico clínico e reduzir riscos associados ao atraso na identificação da doença. Este
+estudo teve como objetivo desenvolver e avaliar um modelo híbrido para a detecção de
+pneumonia em radiografias torácicas. Para isso, a metodologia utilizou o conjunto de dados
+BRAX, após etapas de seleção, balanceamento, particionamento em treino, validação e
+teste, além da aplicação de técnicas de aumento de dados. As arquiteturas VGG16 e
+ResNet50 pré-treinadas no “ImageNet” atuaram como extratoras de características com
+ajuste fino parcial e foram combinadas aos classificadores “Random Forest”, XGBoost e
+“Support Vector Machine”. O estudo também realizou busca de hiperparâmetros com
+“GridSearchCV” para otimizar o desempenho dos modelos híbridos. Os resultados indicaram
+desempenho consistente entre as combinações avaliadas, com destaque para o modelo
+híbrido VGG16 + XGBoost.
+
+Palavras-chave: detecção de pneumonia; aprendizagem por transferência; extração de
+características; classificadores; inteligência artificial.
+
 ### **Metodologia**
 
 <img width="800" height="600" alt="TCC USP - Metodologia" src="https://github.com/user-attachments/assets/f62dfc42-c0f0-4783-a4ab-505a46e1222b" />
